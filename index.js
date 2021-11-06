@@ -49,7 +49,7 @@ const start = () => {
       return createNumber(chatId)
     } else if(+data === chats[chatId]) {
        bot.sendMessage(chatId, `Congratulations, you guessed number ${data}!!!!!`)
-      return bot.sendSticker(chatId, './sticker/AnimatedSticker.tgs')
+      return bot.sendSticker(chatId, 'https://tgram.ru/wiki/stickers/img/Fireworks/gif/4.gif')
     } else{
       return bot.sendMessage(chatId, `Unfortunately, bot thought of number ${chats[chatId]}.\nYou can try again :)`, playAgainBtn)
     }
