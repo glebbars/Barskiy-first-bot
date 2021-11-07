@@ -1,14 +1,14 @@
 const TelegramBot = require('node-telegram-bot-api')
 const {gameOptions, playAgainBtn} = require('./options')
-const token = '2009362660:AAFUhCrU52dq3VBAVj-5TbxRHvRTsxahCfc'
+const token = '2009362660:AAGrNIzneuPg9ed31zgBuJLgIhR7Xd0Rx7Q'
 
 const bot = new TelegramBot(token, {polling: true})
 
 const chats = []
 
 const createNumber = async (chatId) => {
-  bot.sendMessage(chatId, `Now I will think of a number from 1 to 9. Try to guess it ;)`)
-  const randomNumber = Math.floor(Math.random() * 10)
+  bot.sendMessage(chatId, `Now I will think of a number from 1 to 10. Try to guess it ;)`)
+  const randomNumber = Math.ceil(Math.random() * 10)
   chats[chatId] = randomNumber
   await bot.sendMessage(chatId, `Now you can guess `, gameOptions)
 }
@@ -28,7 +28,8 @@ const start = () => {
   
     switch(text){
       case '/start':
-        return bot.sendMessage(chatId, `Welcome, I am Barskiy bot :) `)
+        bot.sendMessage(chatId, `Welcome, I am Barskiy bot :) `)
+      return bot.sendSticker(chatId, 'images/greet.webp')
         break;
       case '/info':
         return bot.sendMessage(chatId, `Your name is ${msg.from.first_name} ${msg.from.last_name} `)
@@ -41,15 +42,15 @@ const start = () => {
   
   })
 
-  bot.on('callback_query',  msg => {
+  bot.on('callback_query', async msg => {
     const data = msg.data
     const chatId = msg.message.chat.id
 
     if(data === '/again'){
       return createNumber(chatId)
     } else if(+data === chats[chatId]) {
-       bot.sendMessage(chatId, `Congratulations, you guessed number ${data}!!!!!`)
-      return bot.sendSticker(chatId, 'https://tgram.ru/wiki/stickers/img/Fireworks/gif/4.gif')
+      await bot.sendSticker(chatId, 'images/img.webp')
+      return bot.sendMessage(chatId, `Congratulations, you guessed number ${data}!!!!!`)
     } else{
       return bot.sendMessage(chatId, `Unfortunately, bot thought of number ${chats[chatId]}.\nYou can try again :)`, playAgainBtn)
     }
